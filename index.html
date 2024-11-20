@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>توليد أسماء حسب الخيارات</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 350px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    button {
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      color: #fff;
+      background-color: #007bff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #output-container {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="password-container" class="container">
+    <h1>أدخل كلمة المرور</h1>
+    <form id="password-form">
+      <input type="password" id="password-input" placeholder="كلمة المرور" required>
+      <button type="submit">إرسال</button>
+    </form>
+    <p id="error-message" style="color: red; display: none;">كلمة المرور غير صحيحة!</p>
+  </div>
+
+  <div class="container" id="main-container" style="display: none;">
+    <h1>توليد أسماء حسب الخيارات</h1>
+    <p>اختر المجموعة:</p>
+    <button onclick="selectCategory(1)">اسامي تنكر</button>
+    <button onclick="selectCategory(2)">زخرفات احرف</button>
+    <button onclick="selectCategory(3)">اساميهم</button>
+    <div id="output-container"></div>
+  </div>
+
+  <script>
+    const password = "UNT&_QQpas#";
+
+    document.getElementById("password-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const enteredPassword = document.getElementById("password-input").value;
+      if (enteredPassword === password) {
+        document.getElementById("password-container").style.display = "none";
+        document.getElementById("main-container").style.display = "block";
+        fetchUserInfo();
+      } else {
+        document.getElementById("error-message").style.display = "block";
+      }
+    });
+
+    const categories = {
+      1: ["░ ₲₣ⱤØ₴₮ⱤłĐɆⱤ░", "S H E R Z", "╰ᗪ أمـيَرٍ الُظًلُام*", "𝙼𝚁𝚂〢 ♕جوكر♕*", "M͎GR̸☠ 𒆜 المجد𒆜*"],
+      2: ["å Ä ä Ả ả Ḁ ḁ Ấ ấ Ầ ầ Ẩ ẩ Ȃ ȃ Ẫ ẫ Ậ ậ Ắ ắ Ằ ằ Ẳ ẳ Ẵ ẵ Ặ ặ Ā ā Ą ą Ȁ ȁ Ǻ ǻ Ȧ ȧ Á á Ǟ ǟ Ǎ ǎ À à Ã ã Ǡ ǡ Â â Ⱥ ⱥ Æ æ Ǣ ǣ Ǽ ǽ Ɐ Ꜳ ꜳ Ꜹ ꜹ Ꜻ ꜻ Ɑ ℀ ⅍ ℁ ª 𝖠 𝐴 𝘈 𝙰 𝑨 𝘼 Ａ 𝐀 𝗔 Ⲁ 🅰 🄰 𝔄 🅐 𝕬 ᴬ ₐ 𝒜 ∀ 𝔸 𝓐"],
+      3: ["ᵀᴵᴷ/☉丂丨丂☉", "＃☠️㊛Ȿ Ⱥ 𝙸 Ƒ㊚☠️＆", "꧁༺𒆜༒5̶11҉", "❂ȶɨӄ🐊ρȷـــබ", "(＃＆) (#&iمزغرفات"]
+    };
+
+    const decorations = [
+      { prefix: "🔥 ", suffix: " 🔥" },
+      { prefix: "⚡ ", suffix: " ⚡" },
+      { prefix: "🌟 ", suffix: " 🌟" },
+      { prefix: "💀 ", suffix: " 💀" },
+      { prefix: "❌ ", suffix: " ❌" },
+    ];
+
+    let selectedCategory = null;
+
+    function selectCategory(categoryNumber) {
+      selectedCategory = categoryNumber;
+      document.getElementById("output-container").innerHTML = `
+        <p>تم اختيار المجموعة ${categoryNumber}. اضغط على الزر لتوليد اسم!</p>
+        <button onclick="generateDecoratedName()">توليد اسم</button>
+      `;
+    }
+
+    function generateDecoratedName() {
+      if (selectedCategory === null) {
+        alert("يرجى اختيار مجموعة أولاً!");
+        return;
+      }
+
+      const randomName = categories[selectedCategory][Math.floor(Math.random() * categories[selectedCategory].length)];
+      const randomDecoration = decorations[Math.floor(Math.random() * decorations.length)];
+      const decoratedName = `${randomDecoration.prefix}${randomName}${randomDecoration.suffix}`;
+
+      document.getElementById("output-container").innerHTML += `
+        <p>${decoratedName}</p>
+      `;
+    }
+
+    function fetchUserInfo() {
+      fetch("https://ip-api.com/json/")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("بيانات المستخدم:", data);
+        })
+        .catch((error) => {
+          console.error("حدث خطأ أثناء جلب بيانات الموقع:", error);
+        });
+    }
+  </script>
+</body>
+
+</html>
